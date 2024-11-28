@@ -1,37 +1,82 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Dados</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Análise Detalhada dos Dados</h1>
+    <div class="container">
+        <header>
+            <h1>Analysis Results</h1>
+        </header>
 
-    <!-- Formulário para upload de novo arquivo -->
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="file">Escolha um arquivo CSV:</label>
-        <input type="file" name="file" id="file" accept=".csv" required>
-        <button type="submit">Fazer Upload</button>
-    </form>
+        <div class="results-container">
+            <h2>Graphs:</h2>
 
-    <h2>Gráficos e Análises</h2>
+            <div class="graphs-container">
+                <!-- Verificar se cada gráfico existe antes de exibir -->
+                {% if hist_path %}
+                    <div class="graph-item">
+                        <img src="{{ hist_path }}" alt="Histogram">
+                        <p>Histogram</p>
+                    </div>
+                {% else %}
+                    <div class="graph-item">
+                        <p>Histogram not available.</p>
+                    </div>
+                {% endif %}
 
-    {% if hist_path %}
-        <h3>Gráfico de Distribuição</h3>
-        <img src="{{ hist_path }}" alt="Histograma">
+                {% if corr_path %}
+                    <div class="graph-item">
+                        <img src="{{ corr_path }}" alt="Correlation Heatmap">
+                        <p>Correlation Heatmap</p>
+                    </div>
+                {% else %}
+                    <div class="graph-item">
+                        <p>Correlation Heatmap not available.</p>
+                    </div>
+                {% endif %}
 
-        <h3>Gráfico de Correlação (Exemplo)</h3>
-        <img src="{{ corr_path }}" alt="Correlação">
+                {% if boxplot_path %}
+                    <div class="graph-item">
+                        <img src="{{ boxplot_path }}" alt="Boxplot">
+                        <p>Boxplot</p>
+                    </div>
+                {% else %}
+                    <div class="graph-item">
+                        <p>Boxplot not available.</p>
+                    </div>
+                {% endif %}
 
-        <h3>Gráfico de Boxplot (Exemplo)</h3>
-        <img src="{{ boxplot_path }}" alt="Boxplot">
-    {% endif %}
+                {% if scatter_path %}
+                    <div class="graph-item">
+                        <img src="{{ scatter_path }}" alt="Scatter Plot">
+                        <p>Scatter Plot</p>
+                    </div>
+                {% else %}
+                    <div class="graph-item">
+                        <p>Scatter Plot not available.</p>
+                    </div>
+                {% endif %}
+            </div>
 
-    <h2>Dados Carregados</h2>
-    <div>{{ data|safe }}</div>
+            <h2>Model Results:</h2>
+            <div class="model-results">
+                <p><strong>MSE:</strong> {{ model_results.mse }}</p>
+                <p><strong>Predictions:</strong></p>
+                <ul>
+                    {% for prediction in model_results.predictions %}
+                        <li>{{ prediction }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-    <a href="/">Voltar à Página Inicial</a>
+            <footer>
+                <a href="/">Upload another file</a>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>
