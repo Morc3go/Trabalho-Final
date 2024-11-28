@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Dados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Análise Detalhada dos Dados</h1>
+
+    <!-- Formulário para upload de novo arquivo -->
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="file">Escolha um arquivo CSV:</label>
+        <input type="file" name="file" id="file" accept=".csv" required>
+        <button type="submit">Fazer Upload</button>
+    </form>
+
+    <h2>Gráficos e Análises</h2>
+
+    {% if hist_path %}
+        <h3>Gráfico de Distribuição</h3>
+        <img src="{{ hist_path }}" alt="Histograma">
+
+        <h3>Gráfico de Correlação (Exemplo)</h3>
+        <img src="{{ corr_path }}" alt="Correlação">
+
+        <h3>Gráfico de Boxplot (Exemplo)</h3>
+        <img src="{{ boxplot_path }}" alt="Boxplot">
+    {% endif %}
+
+    <h2>Dados Carregados</h2>
+    <div>{{ data|safe }}</div>
+
+    <a href="/">Voltar à Página Inicial</a>
+</body>
+</html>
